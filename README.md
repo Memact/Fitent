@@ -74,4 +74,4 @@ Keep `MEMACT_API_KEY` private. Do not expose it in browser code.
 
 ## License
 
-MIT.
+Apache-2.0.
