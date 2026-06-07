@@ -1,6 +1,6 @@
 // ================================================================
 // reports.js — Weekly nutrition reports, smart insights, and exporters
-// NutriPlan-Lite
+// Fitent
 // ================================================================
 
 window.WeeklyReport = (() => {
@@ -210,7 +210,7 @@ window.WeeklyReport = (() => {
 
     // Fallback if no entries yet
     if (insights.length === 0) {
-      insights.push({ icon: '🌱', title: 'Welcome to NutriPlan Reports', desc: 'Log meals, proteins, and fluid targets consistently across the week to compile advanced comparative insights.' });
+      insights.push({ icon: '🌱', title: 'Welcome to Fitent Reports', desc: 'Log meals, proteins, and fluid targets consistently across the week to compile advanced comparative insights.' });
     }
 
     return insights;
@@ -743,7 +743,7 @@ ${recommendations.map(rec => `- ${rec}`).join('\n')}`;
       }
 
       // 3. Download the PDF
-      pdf.save('NutriPlan-Lite-Weekly-Report.pdf');
+      pdf.save('Fitent-Weekly-Report.pdf');
       Toast.show('PDF Report downloaded successfully!', 'success');
 
     } catch (err) {
@@ -789,7 +789,7 @@ ${recommendations.map(rec => `- ${rec}`).join('\n')}`;
       
       const link = document.createElement('a');
       link.setAttribute('href', url);
-      link.setAttribute('download', `NutriPlan-Weekly-Intake-Summary.csv`);
+      link.setAttribute('download', `Fitent-Weekly-Intake-Summary.csv`);
       link.style.visibility = 'hidden';
       
       document.body.appendChild(link);

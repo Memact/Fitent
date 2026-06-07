@@ -18,8 +18,8 @@ export function createSignedState() {
 }
 
 export function verifyConnectionRequest(request, connectionId) {
-  const state = getHeader(request, "x-nutriplan-memact-state");
-  const headerConnectionId = getHeader(request, "x-nutriplan-connection-id");
+  const state = getHeader(request, "x-Fitent-memact-state");
+  const headerConnectionId = getHeader(request, "x-Fitent-connection-id");
 
   if (!state || !verifySignedState(state)) {
     return { ok: false, status: 401, error: "invalid_memact_session" };

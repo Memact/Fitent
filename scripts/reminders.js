@@ -1,6 +1,6 @@
 // ================================================================
 // reminders.js — Smart Meal Reminder & Habit Tracking System
-// NutriPlan-Lite
+// Fitent
 // ================================================================
 
 window.Reminders = (() => {
@@ -41,11 +41,11 @@ window.Reminders = (() => {
   function triggerNotification(label) {
     const text = label === "Hydration" 
       ? "Time to hydrate! Grab a fresh glass of water to keep your hydration streak going." 
-      : `Time for your ${label}! Log your food intake in NutriPlan to keep your calorie goals aligned.`;
+      : `Time for your ${label}! Log your food intake in Fitent to keep your calorie goals aligned.`;
 
     // 1. Trigger Browser Notification (if permission granted)
     if (Notification.permission === "granted") {
-      new Notification(`NutriPlan Reminder: ${label}`, {
+      new Notification(`Fitent Reminder: ${label}`, {
         body: text,
         icon: "/favicon.ico"
       });

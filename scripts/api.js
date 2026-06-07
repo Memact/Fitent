@@ -1,6 +1,6 @@
 // ================================================================
 // api.js — Centralized API Service Layer (Vite & Dual-Mode Optimized)
-// NutriPlan-Lite
+// Fitent
 // ================================================================
 
 // ── Compile-Time Environment Injections & Fallbacks ─────────────

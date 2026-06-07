@@ -1,6 +1,6 @@
 // ================================================================
 // grocery.js — Smart Grocery List Generator Module
-// NutriPlan-Lite
+// Fitent
 // ================================================================
 
 window.Grocery = (() => {

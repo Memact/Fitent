@@ -1,5 +1,5 @@
 -- ====================================================================
--- NutriPlan Lite - Supabase Database Schema Setup
+-- Fitent - Supabase Database Schema Setup
 -- ====================================================================
 -- Execute this script in the Supabase SQL Editor for your project.
 

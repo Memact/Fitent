@@ -1,6 +1,6 @@
 // ================================================================
 // app.js — App entry point, toast notifications, global wiring
-// NutriPlan-Lite
+// Fitent
 // ================================================================
 
 // ── Toast notification system ─────────────────────────────────────
@@ -180,7 +180,7 @@ document.addEventListener('click', async (e) => {
 });
 
 window.addEventListener('appinstalled', () => {
-  console.log('NutriPlan Lite was installed securely.');
+  console.log('Fitent was installed securely.');
   const installPanel = document.getElementById('pwa-install-panel');
   if (installPanel) installPanel.classList.add('hidden');
 });

@@ -1,5 +1,5 @@
 // ================================================================
-// navigation.js — SPA router for NutriPlan-Lite
+// navigation.js — SPA router for Fitent
 // ================================================================
 
 window.Navigation = {

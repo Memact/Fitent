@@ -1,6 +1,6 @@
 // ================================================================
 // onboarding.js — Step-by-Step Profile Wizard & Spotlight Tour Engine
-// NutriPlan-Lite
+// Fitent
 // ================================================================
 
 window.Onboarding = (() => {
@@ -45,7 +45,7 @@ window.Onboarding = (() => {
     const modalTitle = document.getElementById('onboarding-title');
     if (modalTitle) {
       const headings = [
-        'Welcome to NutriPlan',
+        'Welcome to Fitent',
         'Body Metrics',
         'Fitness & Energy Goals',
         'Preferences & Water Target',
@@ -159,7 +159,7 @@ window.Onboarding = (() => {
     {
       selector: '.memact-context-card',
       title: 'AI Recommendations & Context',
-      desc: 'Connect Memact only if you want NutriPlan to reuse approved fitness memory and skip setup questions it already knows.',
+      desc: 'Connect Memact only if you want Fitent to reuse approved fitness memory and skip setup questions it already knows.',
       position: 'left'
     },
     {
@@ -386,8 +386,8 @@ window.Onboarding = (() => {
 
   function finishTour() {
     closeTour();
-    localStorage.setItem('nutriplan_tour_completed', 'true');
-    Toast.show('Onboarding completed! Welcome to NutriPlan Lite 🎉', 'success');
+    localStorage.setItem('Fitent_tour_completed', 'true');
+    Toast.show('Onboarding completed! Welcome to Fitent 🎉', 'success');
   }
 
   function closeTour() {
@@ -550,7 +550,7 @@ window.Onboarding = (() => {
       if (!isSetup) {
         showWizard();
       } else {
-        const tourDone = localStorage.getItem('nutriplan_tour_completed') === 'true';
+        const tourDone = localStorage.getItem('Fitent_tour_completed') === 'true';
         if (!tourDone) {
           startTour();
         }

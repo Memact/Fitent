@@ -1,6 +1,6 @@
 // ================================================================
 // storage.js — Persistent localStorage database layer
-// NutriPlan-Lite
+// Fitent
 //
 // Architecture:
 //   - Primary state: localStorage (always available, instant)
@@ -12,7 +12,7 @@
 // API call so the UI never stalls waiting for the network.
 // ================================================================
 
-const DB_KEY = 'nutriplan_v2';
+const DB_KEY = 'Fitent_v2';
 
 const DEFAULT_PROFILE = {
   isSetup: false,

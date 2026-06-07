@@ -1,6 +1,6 @@
 // ================================================================
 // analytics.js — Dashboard analytics, charts, and health score
-// NutriPlan-Lite
+// Fitent
 // ================================================================
 
 window.Analytics = {

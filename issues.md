@@ -1,4 +1,4 @@
-# NutriPlan Lite - Issues & Roadmap
+# Fitent - Issues & Roadmap
 
 ## 🚨 Critical Issues
 
@@ -134,9 +134,9 @@
 
 ### 1. Create README.md
 ```markdown
-# NutriPlan Lite
+# Fitent
 
-NutriPlan Lite is a nutrition tracking application that helps users log food, track macros, and achieve their fitness goals.
+Fitent is a nutrition tracking application that helps users log food, track macros, and achieve their fitness goals.
 
 ## Features
 
@@ -324,9 +324,9 @@ window.addEventListener('unhandledrejection', (event) => {
 ## 📞 Support
 
 For questions or assistance, contact the development team at:
-- Email: support@nutriplan.com
-- GitHub: https://github.com/yourusername/nutriplan-lite
-- Documentation: https://github.com/yourusername/nutriplan-lite/wiki
+- Email: support@Fitent.com
+- GitHub: https://github.com/yourusername/Fitent
+- Documentation: https://github.com/yourusername/Fitent/wiki
 
 ## 🙏 Acknowledgments
 

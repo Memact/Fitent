@@ -3,7 +3,7 @@
 
 Dear Maintainers/Kernel Team,
 
-This pull request implements multi-user persistence, profile goal customization, daily calendar history tracking, and AI-powered quick logging tools for **NutriPlan Lite**.
+This pull request implements multi-user persistence, profile goal customization, daily calendar history tracking, and AI-powered quick logging tools for **Fitent**.
 
 To integrate and test these features, please follow the guidelines below.
 

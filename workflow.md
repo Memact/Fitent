@@ -1,4 +1,4 @@
-# NutriPlan Lite - System Workflow & Error Analysis
+# Fitent - System Workflow & Error Analysis
 
 ## System Architecture Overview
 

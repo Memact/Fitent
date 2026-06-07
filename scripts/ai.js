@@ -19,7 +19,7 @@ export const isCloudModeActive = Boolean(activeGeminiKey && activeSupabaseUrl);
 // ================================================================
 export function checkApiStatus() {
   if (!isCloudModeActive) {
-    console.warn("NutriPlan-Lite: Running in Local-First Demo Mode (No compile-time or local keys found).");
+    console.warn("Fitent: Running in Local-First Demo Mode (No compile-time or local keys found).");
     showStatusBanner("demo");
     return false;
   }

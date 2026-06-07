@@ -1,5 +1,5 @@
 // tracker.js — Food tracking, meal timeline, macros, Custom Foods
-// NutriPlan-Lite
+// Fitent
 window.Tracker = (() => {
   let currentDate = null; // initialized lazily in init()
   let editingId = null;
@@ -7,7 +7,7 @@ window.Tracker = (() => {
   let initialized = false;
 
   // ── 1. CUSTOM FOOD LOGIC (LOCAL STORAGE) ────────────────────────
-  const CUSTOM_FOODS_KEY = 'nutriplan_custom_foods';
+  const CUSTOM_FOODS_KEY = 'Fitent_custom_foods';
 
   function getCustomFoods() {
     try {

@@ -1,5 +1,5 @@
 // ====================================================================
-// NutriPlan Lite - Premium JavaScript Controller & Integrations
+// Fitent - Premium JavaScript Controller & Integrations
 // ====================================================================
 
 // Global Application Configuration & State
@@ -468,7 +468,7 @@ async function loadUserData() {
 
 // Load data in Local Fallback mode
 function loadLocalFallbackData() {
-    const saved = localStorage.getItem('nutriPlanLocalState');
+    const saved = localStorage.getItem('FitentLocalState');
     if (saved) {
         try {
             localState = JSON.parse(saved);
@@ -658,7 +658,7 @@ function saveLocalState() {
         loggedEntries: dayState.loggedEntries,
         waterConsumed: dayState.waterConsumed
     };
-    localStorage.setItem('nutriPlanLocalState', JSON.stringify(localState));
+    localStorage.setItem('FitentLocalState', JSON.stringify(localState));
 }
 
 // Toggle Custom macros panel visibility
@@ -1411,7 +1411,7 @@ async function sendChatMessage() {
     const targetsText = `Calorie target: ${dayState.targets.calories}kcal. Protein target: ${dayState.targets.macros.protein}g. Carbs: ${dayState.targets.macros.carbs}g. Fats: ${dayState.targets.macros.fat}g.`;
     const logsText = `User has logged ${dayState.consumedTotals.calories}kcal today so far. Logs list: ${JSON.stringify(dayState.loggedEntries)}.`;
 
-    const prompt = `You are Aria, a friendly and highly knowledgeable AI Nutrition Coach integrated into the "NutriPlan Lite" app.
+    const prompt = `You are Aria, a friendly and highly knowledgeable AI Nutrition Coach integrated into the "Fitent" app.
 Your goals: Help the user plan meals, give advice on macronutrients, suggest recipes, and answer nutritional queries in a brief, direct, and motivating way.
 Keep responses concise, friendly, and limited to 2-3 sentences. Don't use bullet points unless specifically asked.
 
@@ -1537,7 +1537,7 @@ document.addEventListener('click', (e) => {
         const a = document.createElement("a");
         a.href = url;
         const dateStr = new Date().toISOString().split('T')[0];
-        a.download = `nutriplan-backup-${dateStr}.json`;
+        a.download = `Fitent-backup-${dateStr}.json`;
         document.body.appendChild(a);
         a.click();
         
@@ -1588,9 +1588,9 @@ document.addEventListener('change', (e) => {
             } catch (error) {
                 console.error("Restore Error:", error);
                 if (typeof notify === 'function') {
-                    notify("Invalid backup file. Please upload a valid NutriPlan JSON.", "error", 4000);
+                    notify("Invalid backup file. Please upload a valid Fitent JSON.", "error", 4000);
                 } else {
-                    alert("❌ Invalid backup file. Please upload a valid NutriPlan JSON backup.");
+                    alert("❌ Invalid backup file. Please upload a valid Fitent JSON backup.");
                 }
             }
             

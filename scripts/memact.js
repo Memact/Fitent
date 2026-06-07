@@ -1,13 +1,13 @@
 // ================================================================
 // memact.js - Optional Memact fitness context bridge
-// NutriPlan-Lite
+// Fitent
 // ================================================================
 
 window.MemactIntegration = (() => {
   const CONFIG = {
-    connectBaseUrl: window.NUTRIPLAN_MEMACT_CONNECT_URL || "https://www.memact.com/connect",
-    appId: window.NUTRIPLAN_MEMACT_APP_ID || "nutriplan-lite",
-    redirectUri: window.NUTRIPLAN_MEMACT_REDIRECT_URI || window.location.origin + window.location.pathname,
+    connectBaseUrl: window.FITENT_MEMACT_CONNECT_URL || "https://www.memact.com/connect",
+    appId: window.FITENT_MEMACT_APP_ID || "fitent",
+    redirectUri: window.FITENT_MEMACT_REDIRECT_URI || window.location.origin + window.location.pathname,
     scopes: ["context:read", "context:write", "memory:read_summary"],
     categories: ["fitness", "dietary_preferences"]
   };
@@ -47,7 +47,7 @@ window.MemactIntegration = (() => {
       button.dataset.memactBound = "true";
       button.addEventListener("click", () => {
         Storage.clearMemactConnection();
-        setStatus("Memact disconnected. NutriPlan will use manual preferences.");
+        setStatus("Memact disconnected. Fitent will use manual preferences.");
         render();
       });
     });
@@ -93,7 +93,7 @@ window.MemactIntegration = (() => {
         memactContextSource: "memact",
         memactContextUpdatedAt: new Date().toISOString()
       });
-      sessionStorage.setItem("nutriplan_memact_active_state", returnedState);
+      sessionStorage.setItem("fitent_memact_active_state", returnedState);
       setStatus("Memact connected. Checking fitness context.");
     } else {
       setStatus("Memact was not connected. Continue with manual fitness preferences.");
@@ -158,7 +158,7 @@ window.MemactIntegration = (() => {
         body: JSON.stringify({
           connection_id: profile.memactConnectionId,
           category: "fitness",
-          source_app: "NutriPlan Lite",
+          source_app: "Fitent",
           context,
           proposed_at: new Date().toISOString()
         })
@@ -286,28 +286,28 @@ window.MemactIntegration = (() => {
       if (!response.ok) throw new Error("session_unavailable");
       const payload = await response.json();
       if (!payload.state) throw new Error("missing_state");
-      sessionStorage.setItem("nutriplan_memact_pending_state", payload.state);
+      sessionStorage.setItem("fitent_memact_pending_state", payload.state);
       return payload.state;
     } catch {
       const fallback = cryptoRandomState();
-      sessionStorage.setItem("nutriplan_memact_pending_state", fallback);
+      sessionStorage.setItem("fitent_memact_pending_state", fallback);
       return fallback;
     }
   }
 
   function getPendingState() {
-    return sessionStorage.getItem("nutriplan_memact_pending_state") || "";
+    return sessionStorage.getItem("fitent_memact_pending_state") || "";
   }
 
   function clearPendingState() {
-    sessionStorage.removeItem("nutriplan_memact_pending_state");
+    sessionStorage.removeItem("fitent_memact_pending_state");
   }
 
   function memactSessionHeaders(profile) {
-    const state = sessionStorage.getItem("nutriplan_memact_active_state") || profile.memactConnectionState || "";
+    const state = sessionStorage.getItem("fitent_memact_active_state") || profile.memactConnectionState || "";
     return {
-      "X-NutriPlan-Connection-Id": profile.memactConnectionId || "",
-      "X-NutriPlan-Memact-State": state
+      "X-Fitent-Connection-Id": profile.memactConnectionId || "",
+      "X-Fitent-Memact-State": state
     };
   }
 

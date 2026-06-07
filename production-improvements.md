@@ -1,4 +1,4 @@
-# NutriPlan Production-Grade Improvements
+# Fitent Production-Grade Improvements
 
 ## 🚀 Production-Grade Features & Improvements
 
@@ -92,7 +92,7 @@ document.getElementById('ai-helper').addEventListener('click', async () => {
 **Service Worker for Offline Caching**
 ```javascript
 // sw.js - Service Worker for offline functionality
-const CACHE_NAME = 'nutriplan-v1';
+const CACHE_NAME = 'Fitent-v1';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -487,7 +487,7 @@ const registerPWA = () => {
     Notification.requestPermission()
       .then(permission => {
         if (permission === 'granted') {
-          new Notification('Welcome to NutriPlan!', {
+          new Notification('Welcome to Fitent!', {
             body: 'Your personal nutrition coach is ready',
             icon: '/icon-192.png'
           });
@@ -789,7 +789,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>NutriPlan Mobile</Text>
+      <Text style={styles.title}>Fitent Mobile</Text>
       
       {profile && (
         <View style={styles.profile}>
@@ -901,8 +901,8 @@ export default App;
 
 ## Conclusion
 
-This production-grade transformation will turn NutriPlan Lite from a simple frontend application into a robust, scalable, and feature-rich nutrition tracking platform. The phased approach ensures steady progress while maintaining system stability throughout the development process.
+This production-grade transformation will turn Fitent from a simple frontend application into a robust, scalable, and feature-rich nutrition tracking platform. The phased approach ensures steady progress while maintaining system stability throughout the development process.
 
 The key is to start with a solid foundation (real-time features, security, monitoring) before moving to advanced features (mobile app, AI enhancements). This ensures that the system remains maintainable and scalable as new features are added.
 
-By following this roadmap, NutriPlan will be well-positioned to handle millions of users while providing a seamless, real-time experience across all devices.
+By following this roadmap, Fitent will be well-positioned to handle millions of users while providing a seamless, real-time experience across all devices.

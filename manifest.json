@@ -1,6 +1,6 @@
 {
-  "name": "NutriPlan Lite",
-  "short_name": "NutriPlan",
+  "name": "Fitent",
+  "short_name": "Fitent",
   "description": "Your local-first fitness and nutrition companion.",
   "start_url": "/index.html",
   "display": "standalone",

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nutriplan-lite-cache-v1';
+const CACHE_NAME = 'Fitent-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

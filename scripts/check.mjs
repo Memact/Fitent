@@ -31,4 +31,4 @@ for (const needle of ["async function buildConnectUrl", "async function proposeM
   }
 }
 
-console.log("NutriPlan check passed.");
+console.log("Fitent check passed.");

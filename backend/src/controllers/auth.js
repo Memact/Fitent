@@ -26,9 +26,9 @@ const signToken = (id, tokenVersion) => {
  * Set authentication cookies on the response.
  *
  * Two cookies are written:
- *   - nutriplan_token: the JWT itself, HttpOnly and Secure so it is never
+ *   - Fitent_token: the JWT itself, HttpOnly and Secure so it is never
  *     accessible to JavaScript and cannot be stolen via XSS.
- *   - nutriplan_session_exp: the token's exp claim (Unix epoch, seconds) as a
+ *   - Fitent_session_exp: the token's exp claim (Unix epoch, seconds) as a
  *     plain string. This cookie is NOT HttpOnly so the frontend can read it to
  *     determine login state and token expiry without ever touching the token.
  *
@@ -43,7 +43,7 @@ const setAuthCookies = (res, token) => {
 
   const isProduction = process.env.NODE_ENV === 'production';
 
-  res.cookie('nutriplan_token', token, {
+  res.cookie('Fitent_token', token, {
     httpOnly: true,
     secure: isProduction,
     sameSite: 'strict',
@@ -54,7 +54,7 @@ const setAuthCookies = (res, token) => {
   // Readable (non-HttpOnly) cookie carrying only the expiry timestamp.
   // The frontend uses this to check login state without accessing the token.
   if (decoded && decoded.exp) {
-    res.cookie('nutriplan_session_exp', String(decoded.exp), {
+    res.cookie('Fitent_session_exp', String(decoded.exp), {
       httpOnly: false,
       secure: isProduction,
       sameSite: 'strict',
@@ -72,8 +72,8 @@ const setAuthCookies = (res, token) => {
 const clearAuthCookies = (res) => {
   const isProduction = process.env.NODE_ENV === 'production';
   const clearOpts = { httpOnly: true, secure: isProduction, sameSite: 'strict', path: '/' };
-  res.clearCookie('nutriplan_token', clearOpts);
-  res.clearCookie('nutriplan_session_exp', { ...clearOpts, httpOnly: false });
+  res.clearCookie('Fitent_token', clearOpts);
+  res.clearCookie('Fitent_session_exp', { ...clearOpts, httpOnly: false });
 };
 
 /**

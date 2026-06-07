@@ -1,10 +1,10 @@
 // ================================================================
 // db.js — IndexedDB wrapper for async local storage
-// NutriPlan-Lite
+// Fitent
 // ================================================================
 
 window.IDB = (() => {
-  const DB_NAME = 'nutriplan_idb';
+  const DB_NAME = 'Fitent_idb';
   const STORE_NAME = 'state';
   const VERSION = 1;
 

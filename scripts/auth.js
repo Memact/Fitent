@@ -1,5 +1,5 @@
 // ================================================================
-// auth.js — Authentication module for NutriPlan-Lite
+// auth.js — Authentication module for Fitent
 //
 // Delegates to:
 //   - ApiService  (all HTTP calls)
@@ -16,9 +16,9 @@ window.Auth = (() => {
 
   // ── Public helpers (re-exported from Session) ──────────────────
 
-  function getToken() { return window.Session ? window.Session.getToken() : localStorage.getItem('nutriplan_token'); }
+  function getToken() { return window.Session ? window.Session.getToken() : localStorage.getItem('Fitent_token'); }
   function isAuthenticated() { return window.Session ? window.Session.isAuthenticated() : !!getToken(); }
-  function getCurrentUser() { return { email: window.Session ? window.Session.getEmail() : localStorage.getItem('nutriplan_user_email') }; }
+  function getCurrentUser() { return { email: window.Session ? window.Session.getEmail() : localStorage.getItem('Fitent_user_email') }; }
 
   // ── Modal control ───────────────────────────────────────────────
 
@@ -134,7 +134,7 @@ window.Auth = (() => {
     window.Session.clear();
 
     // Reset local DB to go back to demo defaults
-    localStorage.removeItem('nutriplan_v2');
+    localStorage.removeItem('Fitent_v2');
     if (window.Storage && window.Storage.clearDB) {
       window.Storage.clearDB();
     }

@@ -8,7 +8,7 @@ Copy and paste this markdown text directly into your GitHub Pull Request descrip
 feat: Upgrade to Online Supabase DB, Premium Glassmorphic Dashboard, and AI Integrations
 
 ## Description
-This pull request brings massive enhancements to **NutriPlan Lite**, elevating it from a simple local calorie counter into a full-featured, persistent, and intelligent fitness companion. It adds online database synchronization (via Supabase), robust local fallback modes, calendar history logs, and AI utilities (via Gemini API).
+This pull request brings massive enhancements to **Fitent**, elevating it from a simple local calorie counter into a full-featured, persistent, and intelligent fitness companion. It adds online database synchronization (via Supabase), robust local fallback modes, calendar history logs, and AI utilities (via Gemini API).
 
 ### 🚀 Key Additions & Features
 
@@ -34,19 +34,19 @@ This pull request brings massive enhancements to **NutriPlan Lite**, elevating i
 
 ## 🛠️ File-by-File Changes Summary
 
-* **[index.html](file:///c:/Users/jayav/Desktop/nutriapp/NutriPlan-Lite/index.html)**:
+* **[index.html](file:///c:/Users/jayav/Desktop/nutriapp/Fitent/index.html)**:
   * Integrated CDN scripts for Supabase JS SDK and Chart.js.
   * Added responsive dashboard cards, calendar date selectors, settings cogs, and modular modals (Add Food form, API config form, Auth login overlay).
-* **[style.css](file:///c:/Users/jayav/Desktop/nutriapp/NutriPlan-Lite/style.css)**:
+* **[style.css](file:///c:/Users/jayav/Desktop/nutriapp/Fitent/style.css)**:
   * Implemented a dark theme color system, custom scrollbars, and fine-bordered glass cards.
   * Explicitly styled dropdown `select option` elements to prevent white-on-white text rendering issues in Windows browsers.
-* **[script.js](file:///c:/Users/jayav/Desktop/nutriapp/NutriPlan-Lite/script.js)**:
+* **[script.js](file:///c:/Users/jayav/Desktop/nutriapp/Fitent/script.js)**:
   * Refactored application state lifecycle (`appState`, `dayState`, `localState`).
   * Programmed unified CRUD actions for logging food and water (dual DB/local modes).
   * Added Gemini API REST connectors for natural language parsing and chatbot coaching.
-* **[foodDB.json](file:///c:/Users/jayav/Desktop/nutriapp/NutriPlan-Lite/foodDB.json)**:
+* **[foodDB.json](file:///c:/Users/jayav/Desktop/nutriapp/Fitent/foodDB.json)**:
   * Expanded list of foods to include exact values for calories, protein, fats, and carbs per 100g.
-* **[supabase_setup.sql](file:///c:/Users/jayav/Desktop/nutriapp/NutriPlan-Lite/supabase_setup.sql)**:
+* **[supabase_setup.sql](file:///c:/Users/jayav/Desktop/nutriapp/Fitent/supabase_setup.sql)**:
   * Prepared the full SQL commands database bootstrap script for contributors/admins.
 
 ---

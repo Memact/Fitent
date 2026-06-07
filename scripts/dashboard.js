@@ -1,6 +1,6 @@
 // ================================================================
 // dashboard.js — Dashboard orchestration, targets, full UI refresh
-// NutriPlan-Lite
+// Fitent
 // ================================================================
 
 window.Dashboard = (() => {

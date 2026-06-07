@@ -1,7 +1,7 @@
-// theme.js - Single source of truth for NutriPlan Lite Theme
+// theme.js - Single source of truth for Fitent Theme
 
 class ThemeService {
-  static STORAGE_KEY = 'nutriplan-theme';
+  static STORAGE_KEY = 'Fitent-theme';
 
   static init() {
     // Initial sync

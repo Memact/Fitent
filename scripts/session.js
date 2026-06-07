@@ -1,10 +1,10 @@
 // ================================================================
 // session.js — JWT Session Manager
-// NutriPlan-Lite
+// Fitent
 //
 // Responsibilities:
 //   - Track user profile in localStorage
-//   - Read auth state from the nutriplan_session_exp cookie (set by the
+//   - Read auth state from the Fitent_session_exp cookie (set by the
 //     backend on login; not HttpOnly so JS can read the expiry timestamp
 //     without ever accessing the JWT itself)
 //   - Guest (demo) mode detection
@@ -12,20 +12,20 @@
 //   - Token refresh stub (ready for future implementation)
 //
 // Token storage: the JWT is stored exclusively in the HttpOnly
-// nutriplan_token cookie set by the backend on login and register. That
+// Fitent_token cookie set by the backend on login and register. That
 // cookie is inaccessible to JavaScript by design, protecting it from XSS
 // theft. The frontend never stores the raw token in localStorage.
 // ================================================================
 
 window.Session = (() => {
   // ── Storage keys ───────────────────────────────────────────────
-  const EMAIL_KEY   = 'nutriplan_user_email';
-  const PROFILE_KEY = 'nutriplan_user_profile';
+  const EMAIL_KEY   = 'Fitent_user_email';
+  const PROFILE_KEY = 'Fitent_user_profile';
 
   // Cookie name that carries the token expiry (epoch seconds).
   // This cookie is NOT HttpOnly so the frontend can read it to determine
   // login state without accessing the JWT itself.
-  const SESSION_EXP_COOKIE = 'nutriplan_session_exp';
+  const SESSION_EXP_COOKIE = 'Fitent_session_exp';
 
   // ── Cookie helpers ───────────────────────────────────────────────
 
@@ -68,7 +68,7 @@ window.Session = (() => {
   // ── Authentication state ────────────────────────────────────────
 
   /**
-   * True when the nutriplan_session_exp cookie is present and has not expired.
+   * True when the Fitent_session_exp cookie is present and has not expired.
    *
    * The backend sets this readable (non-HttpOnly) cookie alongside the
    * HttpOnly token cookie on login and register. Its value is the token's
@@ -168,12 +168,12 @@ window.Session = (() => {
     localStorage.removeItem(EMAIL_KEY);
     localStorage.removeItem(PROFILE_KEY);
     // Remove the legacy token key in case it was set by an older app version.
-    localStorage.removeItem('nutriplan_token');
+    localStorage.removeItem('Fitent_token');
   }
 
   /**
    * Clear all session state and return to demo mode.
-   * Does NOT wipe the nutriplan_v2 database key — handled by Auth.logout().
+   * Does NOT wipe the Fitent_v2 database key — handled by Auth.logout().
    */
   function clear() {
     _clearLocalStorage();

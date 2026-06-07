@@ -4,6 +4,7 @@ node_modules/
 
 # Vite Environment runtime assets & cache
 .vite/
+dist/
 dist-ssr/
 *.local
 

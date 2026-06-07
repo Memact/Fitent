@@ -2,7 +2,7 @@ import { fetchWithTimeout, isAbortError, verifyConnectionRequest } from "./_auth
 
 const MEMACT_BASE_URL = process.env.MEMACT_BASE_URL || "https://api.memact.com";
 const MEMACT_API_KEY = process.env.MEMACT_API_KEY || "";
-const MEMACT_APP_ID = process.env.MEMACT_APP_ID || "nutriplan-lite";
+const MEMACT_APP_ID = process.env.MEMACT_APP_ID || "fitent";
 
 export default async function handler(request, response) {
   if (request.method !== "POST") {
@@ -22,7 +22,7 @@ export default async function handler(request, response) {
   const proposal = {
     schema_version: "memact.app_context_proposal.v0",
     app_id: MEMACT_APP_ID,
-    source_app: body.source_app || "NutriPlan Lite",
+    source_app: body.source_app || "Fitent",
     category: body.category || "fitness",
     context: body.context || {},
     proposed_at: body.proposed_at || new Date().toISOString(),

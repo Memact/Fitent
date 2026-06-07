@@ -1,5 +1,5 @@
 {
-  "name": "nutriplan-lite",
+  "name": "fitent",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -13,19 +13,19 @@
     "check": "node scripts/check.mjs",
     "start": "npx serve ."
   },
-  "description": "Local-first fitness nutrition planner with optional Memact fitness context integration.",
+  "description": "Fitness nutrition planner with optional Memact context integration.",
   "main": "script.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/priyanshu-1010101/NutriPlan-Lite.git"
+    "url": "git+https://github.com/keepsloading/Fitent.git"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/priyanshu-1010101/NutriPlan-Lite/issues"
+    "url": "https://github.com/keepsloading/Fitent/issues"
   },
-  "homepage": "https://github.com/priyanshu-1010101/NutriPlan-Lite#readme",
+  "homepage": "https://github.com/keepsloading/Fitent#readme",
   "devDependencies": {
     "vite": "^8.0.14"
   }

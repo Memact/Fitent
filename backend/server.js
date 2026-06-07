@@ -3,7 +3,7 @@ require('dotenv').config();
 
 // JWT_SECRET must be present and long enough to resist brute-force.
 // The middleware no longer falls back to a hardcoded default. Any token
-// issued with the old default key ('super_secret_nutriplan_token_key',
+// issued with the old default key ('super_secret_Fitent_token_key',
 // 36 chars) is now rejected by the verifier since it was signed with a
 // different secret -- this is the intended behaviour after the migration.
 if (!process.env.JWT_SECRET) {

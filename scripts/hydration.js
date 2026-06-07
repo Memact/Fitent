@@ -1,6 +1,6 @@
 // ================================================================
 // hydration.js — Water intake tracking with bottle animation
-// NutriPlan-Lite
+// Fitent
 // ================================================================
 
 window.Hydration = (() => {
