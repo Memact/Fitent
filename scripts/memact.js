@@ -8,7 +8,7 @@ window.MemactIntegration = (() => {
     connectBaseUrl: window.FITENT_MEMACT_CONNECT_URL || "https://www.memact.com/connect",
     appId: window.FITENT_MEMACT_APP_ID || "fitent",
     redirectUri: window.FITENT_MEMACT_REDIRECT_URI || window.location.origin + window.location.pathname,
-    scopes: ["context:read", "context:write", "memory:read_summary"],
+    scopes: ["cap:request", "cap:read_packet", "context:read", "context:write", "context:propose", "memory:read_summary"],
     categories: ["fitness", "dietary_preferences"]
   };
 
@@ -250,7 +250,7 @@ window.MemactIntegration = (() => {
     if (pill) pill.textContent = connected ? "Connected" : "Manual";
     if (copy) {
       copy.textContent = connected
-        ? "Approved Memact fitness context can fill setup fields and reduce repeated questions."
+        ? "Approved Memact fitness details can fill setup fields and reduce repeated questions."
         : "Connect Memact to reuse fitness context, or continue manually if consent is denied.";
     }
     if (connect) connect.classList.toggle("hidden", connected);
