@@ -136,14 +136,36 @@ button {
   cursor: pointer;
 }
 
-input,
-select {
+input {
   width: 100%;
   color: var(--text-primary);
   background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 0.78rem 0.86rem;
+}
+
+select {
+  width: 100%;
+  color: var(--text-primary);
+  background-color: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.78rem 0.86rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338f2a6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.25rem;
+  padding-right: 2.5rem;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+select:hover {
+  border-color: var(--border-strong);
 }
 
 input:focus,

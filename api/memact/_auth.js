@@ -1,11 +1,14 @@
 import crypto from "node:crypto";
 
-const SESSION_SECRET = process.env.MEMACT_SESSION_SECRET || process.env.MEMACT_API_KEY;
-if (!SESSION_SECRET) {
-  throw new Error(
-    "MEMACT_SESSION_SECRET (or MEMACT_API_KEY) must be set. " +
-    "Refusing to start with a hardcoded fallback secret."
-  );
+function getSessionSecret() {
+  const secret = process.env.MEMACT_SESSION_SECRET || process.env.MEMACT_API_KEY;
+  if (!secret) {
+    throw new Error(
+      "MEMACT_SESSION_SECRET (or MEMACT_API_KEY) must be set. " +
+      "Refusing to start with a hardcoded fallback secret."
+    );
+  }
+  return secret;
 }
 const STATE_TTL_MS = Number(process.env.MEMACT_STATE_TTL_MS || 10 * 60 * 1000);
 const MEMACT_TIMEOUT_MS = Number(process.env.MEMACT_TIMEOUT_MS || 8000);
@@ -63,7 +66,7 @@ function verifySignedState(state) {
 }
 
 function sign(value) {
-  return crypto.createHmac("sha256", SESSION_SECRET).update(value).digest("base64url");
+  return crypto.createHmac("sha256", getSessionSecret()).update(value).digest("base64url");
 }
 
 function safeEqual(a, b) {
