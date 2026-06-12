@@ -166,12 +166,12 @@
     <aside class="drawer-card onboarding-wizard-card">
       <!-- Onboarding Wizard Header Progress -->
       <div class="onboarding-wizard-progress-bar">
-        <div id="onboarding-progress-fill" class="onboarding-progress-fill" style="width: 20%;"></div>
+        <div id="onboarding-progress-fill" class="onboarding-progress-fill" style="width: 16.66%;"></div>
       </div>
       
       <div class="drawer-header">
         <div>
-          <p class="eyebrow" id="onboarding-eyebrow">Step 1 of 5 • Welcome</p>
+          <p class="eyebrow" id="onboarding-eyebrow">Step 1 of 6 • Welcome</p>
           <h2 id="onboarding-title">Welcome to Fitent</h2>
         </div>
       </div>
@@ -207,8 +207,25 @@
           </div>
         </div>
 
-        <!-- STEP 2: Physical Metrics -->
+        <!-- STEP 2: Memact Context -->
         <div id="onboarding-step-2" class="onboarding-step-panel hidden">
+          <p class="step-instruction">Connect your external fitness context to automatically fill targets.</p>
+          <section class="memact-onboarding-panel">
+            <div>
+              <p class="eyebrow">Optional Memact</p>
+              <h3>Use your fitness context</h3>
+              <p>Connect Memact to reuse approved fitness preferences. If there is enough context, Fitent skips setup questions it already knows.</p>
+            </div>
+            <div class="memact-actions">
+              <button id="memact-connect-btn" class="secondary-button full-width" type="button">Connect Memact</button>
+              <button id="memact-skip-btn" class="text-button" type="button">Set up manually</button>
+            </div>
+            <p id="memact-status" class="memact-status" role="status" aria-live="polite" aria-atomic="true">Private by default. API keys stay on the server.</p>
+          </section>
+        </div>
+
+        <!-- STEP 3: Physical Metrics -->
+        <div id="onboarding-step-3" class="onboarding-step-panel hidden">
           <p class="step-instruction">Enter your core metrics so we can calculate your baseline metabolic rates.</p>
           <div class="form-row-2">
             <label>
@@ -235,8 +252,8 @@
           </div>
         </div>
 
-        <!-- STEP 3: Goals & Activity -->
-        <div id="onboarding-step-3" class="onboarding-step-panel hidden">
+        <!-- STEP 4: Goals & Activity -->
+        <div id="onboarding-step-4" class="onboarding-step-panel hidden">
           <p class="step-instruction">Define your destination and physical activity thresholds.</p>
           <label>
             <span>Activity level</span>
@@ -276,8 +293,8 @@
           </div>
         </div>
 
-        <!-- STEP 4: Preferences & Hydration -->
-        <div id="onboarding-step-4" class="onboarding-step-panel hidden">
+        <!-- STEP 5: Preferences & Hydration -->
+        <div id="onboarding-step-5" class="onboarding-step-panel hidden">
           <p class="step-instruction">Customize dietary guidelines and water hydration parameters.</p>
           <label data-context-key="dietaryPreference">
             <span>Diet preference</span>
@@ -299,21 +316,15 @@
           </label>
         </div>
 
-        <!-- STEP 5: Memact Context -->
-        <div id="onboarding-step-5" class="onboarding-step-panel hidden">
-          <p class="step-instruction">Connect your external fitness context to automatically fill targets.</p>
-          <section class="memact-onboarding-panel">
-            <div>
-              <p class="eyebrow">Optional Memact</p>
-              <h3>Use your fitness context</h3>
-              <p>Connect Memact to reuse approved fitness preferences. If there is enough context, Fitent skips setup questions it already knows.</p>
-            </div>
-            <div class="memact-actions">
-              <button id="memact-connect-btn" class="secondary-button full-width" type="button">Connect Memact</button>
-              <button id="memact-skip-btn" class="text-button" type="button">Set up manually</button>
-            </div>
-            <p id="memact-status" class="memact-status" role="status" aria-live="polite" aria-atomic="true">Private by default. API keys stay on the server.</p>
-          </section>
+        <!-- STEP 6: Complete Setup -->
+        <div id="onboarding-step-6" class="onboarding-step-panel hidden">
+          <p class="step-instruction">Review and complete your profile generation.</p>
+          <div class="welcome-wizard-content" style="text-align: center; padding: 1.5rem 0;">
+            <span style="font-size: 3.5rem; display: block; margin-bottom: 1rem;">🎉</span>
+            <h3>Ready to Start!</h3>
+            <p class="welcome-tagline" style="margin-top: 0.5rem;">Your baseline metabolic rate and target calculation fields are successfully prepared.</p>
+            <p style="color: var(--muted); margin-top: 1rem; font-size: 0.9rem;">Click "Complete Setup" below to launch your personalized dashboard.</p>
+          </div>
         </div>
 
         <!-- Wizard Navigation Footer -->
@@ -321,6 +332,7 @@
           <button id="btn-onboarding-back" class="secondary-button hidden" type="button" style="min-height:36px; padding:0 0.9rem;">← Back</button>
           <div class="onboarding-step-dots" style="display:flex; gap:0.45rem;">
             <span class="step-dot active"></span>
+            <span class="step-dot"></span>
             <span class="step-dot"></span>
             <span class="step-dot"></span>
             <span class="step-dot"></span>

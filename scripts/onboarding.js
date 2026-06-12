@@ -5,7 +5,7 @@
 
 window.Onboarding = (() => {
   let activeStep = 1;
-  const totalSteps = 5;
+  const totalSteps = 6;
 
   let tourIndex = 0;
   let activeTourElement = null;
@@ -34,10 +34,11 @@ window.Onboarding = (() => {
     if (stepLabel) {
       const titles = [
         'Welcome',
+        'Memact Context',
         'Physical Metrics',
         'Goals & Activity',
         'Dietary & Hydration',
-        'Memact Context'
+        'Complete Setup'
       ];
       stepLabel.textContent = `Step ${stepNum} of ${totalSteps} • ${titles[stepNum - 1]}`;
     }
@@ -46,10 +47,11 @@ window.Onboarding = (() => {
     if (modalTitle) {
       const headings = [
         'Welcome to Fitent',
+        'Optional Fitness Sync',
         'Body Metrics',
         'Fitness & Energy Goals',
         'Preferences & Water Target',
-        'Optional Fitness Sync'
+        'Ready to Start'
       ];
       modalTitle.textContent = headings[stepNum - 1];
     }
@@ -80,7 +82,7 @@ window.Onboarding = (() => {
   }
 
   function validateWizardStep(stepNum) {
-    if (stepNum === 2) {
+    if (stepNum === 3) {
       const ageVal = parseFloat(document.getElementById('age')?.value);
       const weightVal = parseFloat(document.getElementById('weight')?.value);
       const heightVal = parseFloat(document.getElementById('height')?.value);
@@ -97,7 +99,7 @@ window.Onboarding = (() => {
         Toast.show('Please enter a valid height in cm (50-280).', 'warning');
         return false;
       }
-    } else if (stepNum === 4) {
+    } else if (stepNum === 5) {
       const waterVal = parseFloat(document.getElementById('waterTarget')?.value);
       if (isNaN(waterVal) || waterVal < 500 || waterVal > 10000) {
         Toast.show('Please enter a valid hydration goal (500ml - 10L).', 'warning');
@@ -110,14 +112,24 @@ window.Onboarding = (() => {
   function nextWizardStep() {
     if (validateWizardStep(activeStep)) {
       if (activeStep < totalSteps) {
-        showWizardStep(activeStep + 1);
+        const profile = window.Storage ? window.Storage.getProfile() : {};
+        if (activeStep === 1 && profile.memactConnectionId) {
+          showWizardStep(3);
+        } else {
+          showWizardStep(activeStep + 1);
+        }
       }
     }
   }
 
   function prevWizardStep() {
     if (activeStep > 1) {
-      showWizardStep(activeStep - 1);
+      const profile = window.Storage ? window.Storage.getProfile() : {};
+      if (activeStep === 3 && profile.memactConnectionId) {
+        showWizardStep(1);
+      } else {
+        showWizardStep(activeStep - 1);
+      }
     }
   }
 
@@ -125,7 +137,12 @@ window.Onboarding = (() => {
     const modal = document.getElementById('onboarding-modal');
     if (modal) {
       modal.classList.remove('hidden');
-      showWizardStep(1);
+      const profile = window.Storage ? window.Storage.getProfile() : {};
+      if (profile.memactConnectionId) {
+        showWizardStep(3);
+      } else {
+        showWizardStep(1);
+      }
     }
   }
 

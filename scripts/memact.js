@@ -57,6 +57,7 @@ window.MemactIntegration = (() => {
       skip.dataset.memactBound = "true";
       skip.addEventListener("click", () => {
         setStatus("Manual setup selected. You can connect Memact later.");
+        if (window.Onboarding) window.Onboarding.nextWizardStep();
       });
     }
   }
