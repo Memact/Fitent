@@ -137,28 +137,8 @@ window.Navigation = {
       appContent.innerHTML = '';
       appContent.appendChild(template.content.cloneNode(true));
 
-      // Dispatch event to re-initialize modules for the new page
+      // Dispatch event to initialize modules for the new page.
       window.dispatchEvent(new CustomEvent('pageLoaded', { detail: { page: hash } }));
-      
-      // If it's the dashboard, trigger an app refresh
-      if (hash === 'dashboard' && window.App) {
-        window.App.refresh();
-      }
-
-      // If it's the AI Helper, trigger AI initialization
-      if (hash === 'ai-helper' && window.AI) {
-        window.AI.initMainChat();
-      }
-
-      // If it's the Grocery page, trigger Grocery initialization
-      if (hash === 'grocery' && window.Grocery) {
-        window.Grocery.init();
-      }
-
-      // If it's the Reminders page, trigger Reminders initialization
-      if (hash === 'reminders' && window.Reminders) {
-        window.Reminders.init();
-      }
 
     } catch (err) {
       console.error('Failed to load page:', err);

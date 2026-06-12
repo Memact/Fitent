@@ -20,7 +20,7 @@
 }
 
 .bottom-nav {
-  display: flex;
+  display: none;
   justify-content: space-around;
   align-items: center;
   position: fixed;
@@ -91,6 +91,10 @@
 
 /* Mobile – max 767px (before tablet) */
 @media (max-width: 767px) {
+  .bottom-nav {
+    display: flex;
+  }
+
   /* Prevent iOS from zooming into inputs with small font sizes */
   input,
   select,
@@ -333,7 +337,7 @@
   }
 
   .bottom-nav {
-    display: none;
+    display: none !important;
   }
 
   .desktop-nav {

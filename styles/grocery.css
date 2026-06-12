@@ -111,6 +111,22 @@
   gap: var(--space-xs);
 }
 
+.category-icon {
+  display: inline-grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid rgba(56, 242, 166, 0.2);
+  border-radius: 10px;
+}
+
+.category-icon .app-icon {
+  width: 18px;
+  height: 18px;
+}
+
 .grocery-badge {
   font-size: 0.72rem;
   font-weight: 800;
@@ -134,7 +150,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   padding: 0.85rem 1rem;
+  color: var(--text-primary);
   background: rgba(148, 163, 184, 0.03);
   border: 1px solid rgba(148, 163, 184, 0.08);
   border-radius: var(--radius-md);
@@ -222,36 +240,3 @@
   }
 }
 
-.progress-container {
-  width: 100%;
-  background: #2a2a2a;
-  border-radius: 12px;
-  overflow: hidden;
-  margin: 20px 0;
-}
-
-.progress-bar {
-  height: 20px;
-  width: 0;
-  background: linear-gradient(90deg, #4caf50, #81c784);
-  border-radius: 12px;
-  transition: width 0.5s ease-in-out;
-}
-
-.badge-protein { background: #2196f3; }
-.badge-carbs { background: #ff9800; }
-.badge-fats { background: #4caf50; }
-.badge-micronutrients { background: #9c27b0; }
-
-.grocery-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
-  border-bottom: 1px solid #333;
-}
-
-.grocery-item.checked .grocery-name {
-  text-decoration: line-through;
-  color: #888;
-}

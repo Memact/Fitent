@@ -240,11 +240,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const passwordInput = document.getElementById('auth-password');
 
   if (toggleBtn && passwordInput) {
+    const icons = {
+      eye: '<svg class="app-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>',
+      eyeOff: '<svg class="app-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 3 18 18"/><path d="M10.6 10.6A3 3 0 0 0 13.4 13.4"/><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.5 0 10 7 10 7a18.2 18.2 0 0 1-2.2 3.1"/><path d="M6.6 6.6C3.6 8.6 2 12 2 12s3.5 7 10 7c1.4 0 2.7-.3 3.8-.8"/></svg>'
+    };
+
+    toggleBtn.innerHTML = icons.eye;
     toggleBtn.addEventListener('click', () => {
       const isPassword = passwordInput.getAttribute('type') === 'password';
       passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-      
-      toggleBtn.textContent = isPassword ? '🙈' : '👁️'; 
+      toggleBtn.innerHTML = isPassword ? icons.eyeOff : icons.eye;
+      toggleBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+      toggleBtn.setAttribute('title', isPassword ? 'Hide password' : 'Show password');
     });
   }
 });

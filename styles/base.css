@@ -267,6 +267,23 @@ a {
   width: 42px;
 }
 
+.app-icon {
+  width: 1.15em;
+  height: 1.15em;
+  display: inline-block;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-button .app-icon {
+  width: 20px;
+  height: 20px;
+}
+
 .primary-button:hover,
 .secondary-button:hover,
 .icon-button:hover {

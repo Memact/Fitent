@@ -1,12 +1,11 @@
 // ================================================================
-// grocery.js — Smart Grocery List Generator Module
+// grocery.js - Smart Grocery List Generator Module
 // Fitent
 // ================================================================
 
 window.Grocery = (() => {
   let shoppingListState = [];
 
-  // Core foods library for suggestions categorized by macro type
   const groceryDatabase = {
     protein: [
       { name: "Chicken breast", baseQty: 500, unit: "g" },
@@ -43,34 +42,29 @@ window.Grocery = (() => {
     ]
   };
 
-  // Generate grocery list items dynamically based on BMR and macro choices
   function generateWeeklyList() {
     const profile = window.Storage ? window.Storage.getProfile() : {};
-    
-    // Determine caloric multiplier (higher calories = larger portions)
     const baseCalories = 2000;
     let targetCalories = baseCalories;
+
     if (window.Dashboard && window.Dashboard.computeTargets) {
       targetCalories = window.Dashboard.computeTargets(profile).calories;
     }
+
     const multiplier = targetCalories / baseCalories;
-
-    // Determine macro goals to adjust ratios
-    const goal = profile.goal || "maintain";
     const split = profile.macroSplit || "balanced";
-
     const list = [];
-    const addGroup = (type, badgeClass, scale = 1.0) => {
+
+    const addGroup = (type, badgeClass, scale = 1) => {
       const items = groceryDatabase[type] || [];
       items.forEach(item => {
         let qty = Math.round(item.baseQty * multiplier * scale);
-        // Clean egg whites vs grams display
-        if (item.unit === "eggs" || item.unit === "pcs" || item.unit === "loaf") {
+        if (["eggs", "pcs", "loaf"].includes(item.unit)) {
           qty = Math.max(1, Math.round(item.baseQty * scale));
         }
 
         list.push({
-          id: `${type}-${item.name.toLowerCase().replace(/\s+/g, '-')}`,
+          id: `${type}-${item.name.toLowerCase().replace(/\s+/g, "-")}`,
           name: item.name,
           quantity: qty,
           unit: item.unit,
@@ -81,7 +75,6 @@ window.Grocery = (() => {
       });
     };
 
-    // Scale grocery components depending on macronutrient split preference
     if (split === "highprotein") {
       addGroup("protein", "badge-protein", 1.4);
       addGroup("carbs", "badge-carbs", 0.8);
@@ -91,42 +84,35 @@ window.Grocery = (() => {
       addGroup("carbs", "badge-carbs", 0.4);
       addGroup("fats", "badge-fats", 1.4);
     } else {
-      // Balanced standard splits
-      addGroup("protein", "badge-protein", 1.0);
-      addGroup("carbs", "badge-carbs", 1.0);
-      addGroup("fats", "badge-fats", 1.0);
+      addGroup("protein", "badge-protein");
+      addGroup("carbs", "badge-carbs");
+      addGroup("fats", "badge-fats");
     }
-    addGroup("micronutrients", "badge-micronutrients", 1.0);
 
+    addGroup("micronutrients", "badge-micronutrients");
     shoppingListState = list;
-    
-    // Load check states from localStorage if they match current IDs
+
     const savedStates = localStorage.getItem("np_shopping_checklist");
-    if (savedStates) {
-      try {
-        const checkedIds = JSON.parse(savedStates);
-        shoppingListState.forEach(item => {
-          if (checkedIds.includes(item.id)) {
-            item.checked = true;
-          }
-        });
-      } catch (e) {
-        console.error("Could not load checklist states", e);
-      }
+    if (!savedStates) return;
+
+    try {
+      const checkedIds = JSON.parse(savedStates);
+      shoppingListState.forEach(item => {
+        item.checked = checkedIds.includes(item.id);
+      });
+    } catch (err) {
+      console.error("Could not load checklist states", err);
     }
   }
 
   function toggleItem(id) {
     const item = shoppingListState.find(x => x.id === id);
-    if (item) {
-      item.checked = !item.checked;
-      
-      // Save checked states to localStorage
-      const checkedIds = shoppingListState.filter(x => x.checked).map(x => x.id);
-      localStorage.setItem("np_shopping_checklist", JSON.stringify(checkedIds));
-      
-      render();
-    }
+    if (!item) return;
+
+    item.checked = !item.checked;
+    const checkedIds = shoppingListState.filter(x => x.checked).map(x => x.id);
+    localStorage.setItem("np_shopping_checklist", JSON.stringify(checkedIds));
+    render();
   }
 
   function getProgress() {
@@ -139,50 +125,44 @@ window.Grocery = (() => {
     const listContainer = document.getElementById("grocery-timeline");
     if (!listContainer) return;
 
-    // Group items by category to render structured sections
     const categories = {
-      protein: { title: "🍖 High Proteins", badge: "badge-protein", icon: "badge-protein" },
-      carbs: { title: "🍞 Complex Carbs", badge: "badge-carbs", icon: "badge-carbs" },
-      fats: { title: "🥑 Healthy Fats", badge: "badge-fats", icon: "badge-fats" },
-      micronutrients: { title: "🥗 Fruits & Vegetables", badge: "badge-micronutrients", icon: "badge-micronutrients" }
+      protein: { title: "High Proteins", badge: "badge-protein", icon: groceryIcon("protein") },
+      carbs: { title: "Complex Carbs", badge: "badge-carbs", icon: groceryIcon("carbs") },
+      fats: { title: "Healthy Fats", badge: "badge-fats", icon: groceryIcon("fats") },
+      micronutrients: { title: "Fruits & Vegetables", badge: "badge-micronutrients", icon: groceryIcon("micronutrients") }
     };
 
-    let html = "";
-    Object.entries(categories).forEach(([catKey, catMeta]) => {
+    const html = Object.entries(categories).map(([catKey, catMeta]) => {
       const items = shoppingListState.filter(x => x.category === catKey);
-      if (items.length === 0) return;
+      if (items.length === 0) return "";
 
-      html += `
+      return `
         <div class="glass-panel grocery-card">
           <div class="grocery-card-header">
-            <h3>${catMeta.title}</h3>
+            <h3><span class="category-icon" aria-hidden="true">${catMeta.icon}</span>${catMeta.title}</h3>
             <span class="grocery-badge ${catMeta.badge}">${catKey}</span>
           </div>
           <div class="grocery-item-list">
             ${items.map(item => `
-              <div class="grocery-item ${item.checked ? 'checked' : ''}" data-grocery-item-id="${item.id}">
-                <div class="grocery-item-left">
-                  <div class="grocery-checkbox"></div>
+              <button class="grocery-item ${item.checked ? "checked" : ""}" data-grocery-item-id="${item.id}" type="button" aria-pressed="${item.checked}">
+                <span class="grocery-item-left">
+                  <span class="grocery-checkbox"></span>
                   <span class="grocery-name">${item.name}</span>
-                </div>
+                </span>
                 <span class="grocery-qty">${item.quantity} ${item.unit}</span>
-              </div>
-            `).join('')}
+              </button>
+            `).join("")}
           </div>
         </div>
       `;
-    });
+    }).join("");
 
     listContainer.innerHTML = `<div class="grocery-grid">${html}</div>`;
 
-    // Bind click events on items
     document.querySelectorAll("[data-grocery-item-id]").forEach(el => {
-      el.addEventListener("click", () => {
-        toggleItem(el.dataset.groceryItemId);
-      });
+      el.addEventListener("click", () => toggleItem(el.dataset.groceryItemId));
     });
 
-    // Update Progress Ring
     const progress = getProgress();
     const ring = document.getElementById("grocery-progress-ring");
     if (ring) {
@@ -225,74 +205,32 @@ window.Grocery = (() => {
     render();
   }
 
+  function groceryIcon(type) {
+    const icons = {
+      protein: '<svg class="app-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10c-1.7 1.7-2.1 4.5-.9 6.6l1.3 2.2c.5.8 1.6 1 2.3.3l9.4-9.4c.7-.7.5-1.8-.3-2.3l-2.2-1.3C14.5 4.9 11.7 5.3 10 7l-3 3Z"/><path d="m8 16 8-8"/><path d="M5.5 12.5 3 10"/><path d="M11.5 18.5 14 21"/></svg>',
+      carbs: '<svg class="app-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 11c0-3.3 2.7-6 6-6h2c3.3 0 6 2.7 6 6v2c0 3.3-2.7 6-6 6h-2c-3.3 0-6-2.7-6-6v-2Z"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>',
+      fats: '<svg class="app-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s7 7.1 7 12.1A7 7 0 1 1 5 15.1C5 10.1 12 3 12 3Z"/><path d="M9 15a3 3 0 0 0 3 3"/></svg>',
+      micronutrients: '<svg class="app-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 13c0-4.4 3.6-8 8-8h4v4c0 4.4-3.6 8-8 8H6v-4Z"/><path d="M6 17c0-3.3 2.7-6 6-6h1"/><path d="M6 21v-4"/></svg>'
+    };
+    return icons[type] || icons.micronutrients;
+  }
+
   function init() {
     generateWeeklyList();
     render();
 
-    // Bind Action Buttons
     const copyBtn = document.getElementById("grocery-btn-copy");
-    if (copyBtn) {
+    if (copyBtn && !copyBtn.dataset.groceryBound) {
+      copyBtn.dataset.groceryBound = "true";
       copyBtn.addEventListener("click", copyToClipboard);
     }
 
     const resetBtn = document.getElementById("grocery-btn-reset");
-    if (resetBtn) {
+    if (resetBtn && !resetBtn.dataset.groceryBound) {
+      resetBtn.dataset.groceryBound = "true";
       resetBtn.addEventListener("click", resetChecklist);
     }
   }
 
   return { init, refresh: init };
 })();
-
-// 1. Inject the Grocery layout into the SPA container
-document.getElementById("app-content").innerHTML = `
-  <section class="grocery-layout">
-    <div class="grocery-hero">
-      <div class="grocery-hero-text">
-        <h1>Weekly Grocery List</h1>
-        <p>Your personalized shopping items computed automatically.</p>
-      </div>
-      <div class="grocery-progress-card">
-        <div class="grocery-progress-ring"><span>0%</span></div>
-        <small>Shopping Progress</small>
-      </div>
-    </div>
-    <div id="grocery-timeline"></div>
-
-    <!-- Action buttons -->
-    <div class="grocery-action-bar">
-      <button id="grocery-btn-reset">Reset Shopping Checklist</button>
-      <button id="grocery-btn-copy">Copy List to Clipboard</button>
-    </div>
-  </section>
-`;
-
-// 2. Define init() AFTER layout exists
-function init() {
-  generateWeeklyList();   // builds shoppingListState
-  render();               // injects cards into #grocery-timeline
-  updateProgress(getProgress());
-
-  // Bind Action Buttons
-  const copyBtn = document.getElementById("grocery-btn-copy");
-  if (copyBtn) copyBtn.addEventListener("click", copyToClipboard);
-
-  const resetBtn = document.getElementById("grocery-btn-reset");
-  if (resetBtn) resetBtn.addEventListener("click", resetChecklist);
-}
-
-// 3. Toggle items + update progress
-document.addEventListener("click", e => {
-  const itemEl = e.target.closest(".grocery-item");
-  if (!itemEl) return;
-
-  const id = itemEl.dataset.groceryItemId;
-  const item = shoppingListState.find(x => x.id == id);
-  item.checked = !item.checked;
-
-  render();
-  updateProgress(getProgress());
-});
-
-// 4. Run init() when Grocery page loads
-init();
