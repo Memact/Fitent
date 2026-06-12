@@ -53,9 +53,9 @@
 }
 
 .tab-btn.active {
-  background: linear-gradient(135deg, var(--green), #b7ffe1);
-  color: #04150e;
-  box-shadow: 0 8px 18px rgba(56, 242, 166, 0.18);
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  box-shadow: none;
 }
 
 /* Stats Highlight Grid */
@@ -559,10 +559,10 @@
 
 .onboarding-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--green), #5eead4);
+  background: var(--text-primary);
   border-radius: 0 4px 4px 0;
   transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 10px rgba(56, 242, 166, 0.5);
+  box-shadow: none;
 }
 
 .onboarding-step-panel {

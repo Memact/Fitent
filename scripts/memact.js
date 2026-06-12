@@ -134,10 +134,22 @@ window.MemactIntegration = (() => {
       revealMissingFields(missing);
 
       if (!missing.length) {
-        Storage.saveProfile({ isSetup: true });
-        document.getElementById("onboarding-modal")?.classList.add("hidden");
+        if (window.Onboarding) {
+          window.Onboarding.showWizardStep(6);
+        } else {
+          document.getElementById("onboarding-modal")?.classList.add("hidden");
+        }
         setStatus("Fitness context loaded from Memact.");
       } else {
+        if (window.Onboarding) {
+          const enabled = window.Onboarding.getEnabledSteps();
+          const firstMissingStep = enabled.find(s => s !== 1 && s !== 2 && s !== 6);
+          if (firstMissingStep) {
+            window.Onboarding.showWizardStep(firstMissingStep);
+          } else {
+            window.Onboarding.showWizardStep(6);
+          }
+        }
         setStatus(`Memact is connected. Please fill ${missing.length} missing fitness detail${missing.length === 1 ? "" : "s"}.`);
       }
     } catch (error) {

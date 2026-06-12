@@ -15,8 +15,8 @@
 
 .reminders-hero-text h1 {
   font-size: 2.4rem;
-  font-weight: 900;
-  background: linear-gradient(90deg, #4cafef, #81c784);
+  font-weight: 700;
+  background: linear-gradient(to right, var(--text-primary) 30%, var(--text-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

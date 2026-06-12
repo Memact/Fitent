@@ -33,10 +33,10 @@
   width: 46px;
   height: 46px;
   place-items: center;
-  color: #04150e;
-  background: linear-gradient(135deg, var(--green), #b7ffe1);
-  border-radius: 16px;
-  font-weight: 950;
+  color: var(--bg-primary);
+  background: var(--text-primary);
+  border-radius: var(--radius-lg);
+  font-weight: 700;
 }
 
 .brand strong,

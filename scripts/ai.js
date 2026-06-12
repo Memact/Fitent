@@ -36,10 +36,10 @@ export function showStatusBanner(type, message = "") {
   
   if (type === 'demo') {
     banner.className = 'bg-blue-500/20 border border-blue-500 text-blue-200 p-4 rounded-xl my-3 text-sm text-center font-medium backdrop-blur-md transition-all duration-300';
-    banner.innerText = 'ℹ️ Running in Local-First Demo Mode. Calorie calculations and local metric updates persist offline!';
+    banner.innerText = 'Running in Local-First Demo Mode. Calorie calculations and local metric updates persist offline!';
   } else if (type === 'error') {
     banner.className = 'bg-red-500/20 border border-red-500 text-red-200 p-4 rounded-xl my-3 text-sm text-center font-medium backdrop-blur-md transition-all duration-300';
-    banner.innerText = message || '⚠️ API Connection Fault (401/403 Invalid Context). Verify credentials inside your Settings layer.';
+    banner.innerText = message || 'API Connection Fault (401/403 Invalid Context). Verify credentials inside your Settings layer.';
   }
 
   aiContainer.prepend(banner);
@@ -59,37 +59,37 @@ window.AI = (() => {
     {
       test: /how.*doing|progress|status|summary/i,
       reply: (ctx) => {
-        const hydMsg = ctx.hydPct >= 1 ? 'Hydration goal met! 💧' : `Hydration at ${Math.round(ctx.hydPct * 100)}%.`;
-        return `📊 **Daily Summary:**\n- Calories: ${ctx.calories}/${ctx.targetCal} kcal (${Math.round(ctx.calPct)}%)\n- Protein: ${ctx.protein}/${ctx.targetProtein}g\n- Carbs: ${ctx.carbs}/${ctx.targetCarbs}g\n- Fat: ${ctx.fat}/${ctx.targetFat}g\n- ${hydMsg}\n\nHealth Score: **${ctx.score}/100** ${ctx.score >= 80 ? '🌟' : ctx.score >= 50 ? '💪' : '🎯'}`;
+        const hydMsg = ctx.hydPct >= 1 ? 'Hydration goal met!' : `Hydration at ${Math.round(ctx.hydPct * 100)}%.`;
+        return `**Daily Summary:**\n- Calories: ${ctx.calories}/${ctx.targetCal} kcal (${Math.round(ctx.calPct)}%)\n- Protein: ${ctx.protein}/${ctx.targetProtein}g\n- Carbs: ${ctx.carbs}/${ctx.targetCarbs}g\n- Fat: ${ctx.fat}/${ctx.targetFat}g\n- ${hydMsg}\n\nHealth Score: **${ctx.score}/100**`;
       }
     },
     {
       test: /water|hydrat|drink/i,
       reply: (ctx) => {
         const rem = Math.max(0, ctx.waterTarget - ctx.water);
-        if (ctx.hydPct >= 1) return `✅ Amazing! You've hit your hydration goal of ${ctx.waterTarget}ml. Keep sipping!`;
-        return `💧 You've had **${ctx.water}ml** of your ${ctx.waterTarget}ml goal. That's ${Math.round(ctx.hydPct * 100)}%. You need **${rem}ml** more — try a glass every hour!`;
+        if (ctx.hydPct >= 1) return `Amazing! You've hit your hydration goal of ${ctx.waterTarget}ml. Keep sipping!`;
+        return `You've had **${ctx.water}ml** of your ${ctx.waterTarget}ml goal. That's ${Math.round(ctx.hydPct * 100)}%. You need **${rem}ml** more — try a glass every hour!`;
       }
     },
     {
       test: /protein|muscle|build|strength/i,
       reply: (ctx) => {
-        if (ctx.protPct >= 0.9) return `💪 Excellent protein intake! You're at **${ctx.protein}g** of ${ctx.targetProtein}g. Keep it up!`;
-        return `💪 Your protein is at **${ctx.protein}g** (${Math.round(ctx.protPct * 100)}% of goal). To hit ${ctx.targetProtein}g, try adding: eggs, Greek yogurt, chicken, paneer, tofu, or dal to your next meal.`;
+        if (ctx.protPct >= 0.9) return `Excellent protein intake! You're at **${ctx.protein}g** of ${ctx.targetProtein}g. Keep it up!`;
+        return `Your protein is at **${ctx.protein}g** (${Math.round(ctx.protPct * 100)}% of goal). To hit ${ctx.targetProtein}g, try adding: eggs, Greek yogurt, chicken, paneer, tofu, or dal to your next meal.`;
       }
     },
     {
       test: /calori|calorie|kcal|eat|food/i,
       reply: (ctx) => {
         const rem = Math.max(0, ctx.targetCal - ctx.calories);
-        if (ctx.calPct > 1.1) return `⚠️ You're **${ctx.calories - ctx.targetCal} kcal over** your target. Consider a lighter dinner or skip the evening snack.`;
-        if (ctx.calPct < 0.5 && ctx.calories === 0) return `🍽️ You haven't logged any food yet today. Start with breakfast to fuel your body and track your nutrition!`;
-        return `🍽️ You've eaten **${ctx.calories} kcal** (${Math.round(ctx.calPct * 100)}% of goal). ${rem > 0 ? `You have ${Math.round(rem)} kcal remaining.` : 'You\'ve hit your calorie goal!'}`;
+        if (ctx.calPct > 1.1) return `You're **${ctx.calories - ctx.targetCal} kcal over** your target. Consider a lighter dinner or skip the evening snack.`;
+        if (ctx.calPct < 0.5 && ctx.calories === 0) return `You haven't logged any food yet today. Start with breakfast to fuel your body and track your nutrition!`;
+        return `You've eaten **${ctx.calories} kcal** (${Math.round(ctx.calPct * 100)}% of goal). ${rem > 0 ? `You have ${Math.round(rem)} kcal remaining.` : 'You\'ve hit your calorie goal!'}`;
       }
     },
     {
       test: /streak|consistency|habit/i,
-      reply: (ctx) => `🔥 Your current tracking streak is **${ctx.streak} day${ctx.streak !== 1 ? 's' : ''}**! ${ctx.streak >= 7 ? 'Incredible consistency!' : 'Great start!'}`
+      reply: (ctx) => `Your current tracking streak is **${ctx.streak} day${ctx.streak !== 1 ? 's' : ''}**! ${ctx.streak >= 7 ? 'Incredible consistency!' : 'Great start!'}`
     }
   ];
 
@@ -130,6 +130,164 @@ window.AI = (() => {
     return `I'm here to help with your nutrition. You've logged **${ctx.calories} kcal** today (${Math.round(ctx.calPct * 100)}% of goal). Ask me about meals, macros, hydration, recipes, or your progress.`;
   }
 
+  function checkAndParseChatReply(prompt) {
+    const pendingField = sessionStorage.getItem('fitent_ai_pending_field');
+    if (!pendingField) return null;
+
+    const profile = typeof Storage !== 'undefined' ? Storage.getProfile() : {};
+    if (!profile.memactConnectionId) {
+      sessionStorage.removeItem('fitent_ai_pending_field');
+      return null;
+    }
+
+    let parsedValue = null;
+    let feedback = "";
+
+    if (pendingField === 'age') {
+      const match = prompt.match(/\b(\d{1,3})\b/);
+      if (match) {
+        const val = parseInt(match[1], 10);
+        if (val >= 1 && val <= 120) {
+          parsedValue = val;
+          profile.age = val;
+          feedback = `Got it! I've updated your age to **${val}** and proposed it to Memact.`;
+        }
+      }
+    } else if (pendingField === 'weight') {
+      const match = prompt.match(/\b(\d+(?:\.\d+)?)\s*(?:kg|lbs|kilos)?\b/i);
+      if (match) {
+        let val = parseFloat(match[1]);
+        if (prompt.toLowerCase().includes('lbs')) {
+          val = Math.round(val / 2.20462 * 10) / 10;
+        }
+        if (val >= 20 && val <= 300) {
+          parsedValue = val;
+          profile.weight = val;
+          feedback = `Awesome! I've updated your weight to **${val} kg** and proposed it to Memact.`;
+        }
+      }
+    } else if (pendingField === 'height') {
+      const match = prompt.match(/\b(\d+(?:\.\d+)?)\s*(?:cm|m|feet|ft)?\b/i);
+      if (match) {
+        let val = parseFloat(match[1]);
+        if (val < 3) {
+          val = Math.round(val * 100);
+        }
+        if (val >= 50 && val <= 280) {
+          parsedValue = val;
+          profile.height = val;
+          feedback = `Super! I've set your height to **${val} cm** and proposed it to Memact.`;
+        }
+      }
+    } else if (pendingField === 'activity') {
+      const p = prompt.toLowerCase();
+      if (p.includes('sedentary') || p.includes('desk')) {
+        parsedValue = '1.2';
+      } else if (p.includes('light')) {
+        parsedValue = '1.375';
+      } else if (p.includes('moderate') || p.includes('medium') || p.includes('normal')) {
+        parsedValue = '1.55';
+      } else if (p.includes('active') || p.includes('high')) {
+        parsedValue = '1.725';
+      } else if (p.includes('very active') || p.includes('athlete')) {
+        parsedValue = '1.9';
+      }
+      if (parsedValue) {
+        profile.activity = parsedValue;
+        const labels = { '1.2': 'Sedentary', '1.375': 'Light', '1.55': 'Moderate', '1.725': 'Active', '1.9': 'Very Active' };
+        feedback = `Perfect. Your activity level is set to **${labels[parsedValue]}** and proposed to Memact.`;
+      }
+    } else if (pendingField === 'goal') {
+      const p = prompt.toLowerCase();
+      if (p.includes('lose') || p.includes('diet') || p.includes('deficit') || p.includes('slimmer')) {
+        parsedValue = 'lose';
+      } else if (p.includes('maintain') || p.includes('keep') || p.includes('stay')) {
+        parsedValue = 'maintain';
+      } else if (p.includes('gain') || p.includes('bulk') || p.includes('muscle')) {
+        parsedValue = 'gain';
+      }
+      if (parsedValue) {
+        profile.goal = parsedValue;
+        const labels = { 'lose': 'Lose weight', 'maintain': 'Maintain', 'gain': 'Gain muscle' };
+        feedback = `Great goal: **${labels[parsedValue]}** has been saved and proposed to Memact.`;
+      }
+    } else if (pendingField === 'dietaryPreference') {
+      const p = prompt.toLowerCase();
+      if (p.includes('vegetarian') || p.includes('veg')) {
+        parsedValue = 'vegetarian';
+      } else if (p.includes('vegan')) {
+        parsedValue = 'vegan';
+      } else if (p.includes('high protein') || p.includes('protein')) {
+        parsedValue = 'high-protein';
+      } else if (p.includes('low carb') || p.includes('keto')) {
+        parsedValue = 'low-carb';
+      } else if (p.includes('balanced') || p.includes('normal') || p.includes('anything')) {
+        parsedValue = 'balanced';
+      }
+      if (parsedValue) {
+        profile.dietaryPreference = parsedValue;
+        feedback = `Dietary preference set to **${parsedValue}** and proposed to Memact.`;
+      }
+    } else if (pendingField === 'allergies') {
+      if (prompt.trim().length > 1) {
+        parsedValue = prompt.replace(/^(my allergies are|i have|none|no)\s+/i, '').trim();
+        profile.allergies = parsedValue;
+        feedback = `Allergies/restrictions updated to "**${parsedValue}**" and proposed to Memact.`;
+      }
+    }
+
+    if (parsedValue !== null) {
+      sessionStorage.removeItem('fitent_ai_pending_field');
+      if (typeof Storage !== 'undefined') {
+        Storage.saveProfile(profile);
+      }
+      if (window.MemactIntegration) {
+        window.MemactIntegration.proposeMissingContextToMemact(profile);
+        window.MemactIntegration.render();
+      }
+      if (typeof App !== 'undefined' && App.refresh) App.refresh();
+      if (typeof Dashboard !== 'undefined' && Dashboard.refresh) Dashboard.refresh();
+      return feedback;
+    }
+
+    return null;
+  }
+
+  function appendMissingFieldQuestionIfNeeded(response) {
+    const profile = typeof Storage !== 'undefined' ? Storage.getProfile() : {};
+    if (!profile.memactConnectionId) return response;
+
+    const missing = getMissingFieldsLocal(profile);
+    if (!missing.length) return response;
+
+    const field = missing[0];
+    sessionStorage.setItem('fitent_ai_pending_field', field);
+
+    const questions = {
+      age: "By the way, your **age** is missing from your profile. Could you tell me how old you are?",
+      weight: "By the way, your **weight** is missing from your profile. What is your current weight in kg?",
+      height: "By the way, your **height** is missing from your profile. What is your height in cm?",
+      activity: "By the way, what is your typical **activity level**? (Sedentary, Light, Moderate, Active, or Athlete)",
+      goal: "By the way, what is your primary **fitness goal**? (Lose weight, Maintain, or Gain muscle)",
+      dietaryPreference: "By the way, do you have a **dietary preference**? (Balanced, Vegetarian, Vegan, High protein, or Low carb)",
+      allergies: "By the way, do you have any **allergies or dietary restrictions**? (e.g. peanuts, lactose, none)"
+    };
+
+    const question = questions[field] || "";
+    if (question) {
+      return response + `\n\n_${question}_`;
+    }
+    return response;
+  }
+
+  function getMissingFieldsLocal(profile) {
+    const required = ["age", "weight", "height", "activity", "goal", "dietaryPreference", "allergies"];
+    return required.filter((field) => {
+      const value = profile[field];
+      return value === undefined || value === null || String(value).trim() === "";
+    });
+  }
+
   // Helper to ensure appendMessage functionality locally if global is missing
   function addChatBubble(type, text, id = null) {
     const feed = document.getElementById('main-ai-feed');
@@ -151,7 +309,7 @@ window.AI = (() => {
       });
 
       if (response.status === 401 || response.status === 403) {
-        showStatusBanner('error', '⚠️ Remote AI processing engine rejected your credentials (401/403). Falling back to offline engine!');
+        showStatusBanner('error', 'Remote AI processing engine rejected your credentials (401/403). Falling back to offline engine!');
         return null;
       }
 
@@ -219,13 +377,13 @@ window.AI = (() => {
           const base64String = event.target.result;
           const mimeType = file.type;
           
-          addChatBubble('user-bubble', '📸 Uploaded a meal photo');
+          addChatBubble('user-bubble', 'Uploaded a meal photo');
           const typingId = 'typing-' + Date.now();
-          addChatBubble('ai-bubble', 'Analyzing meal image... 📸', typingId);
+          addChatBubble('ai-bubble', 'Analyzing meal image...', typingId);
 
           if (!isCloudModeActive) {
             document.getElementById(typingId)?.remove();
-            addChatBubble('ai-bubble', '⚠️ Image analysis requires Cloud Mode (API Key). Currently in Local Demo Mode.');
+            addChatBubble('ai-bubble', 'Image analysis requires Cloud Mode (API Key). Currently in Local Demo Mode.');
             return;
           }
 
@@ -247,7 +405,7 @@ window.AI = (() => {
              if (typeof window.Storage !== 'undefined' && window.Storage.addFood) {
                 window.Storage.addFood(dateKey, entry);
                 if (typeof window.App !== 'undefined') window.App.refresh();
-                addChatBubble('ai-bubble', `✅ Successfully logged **${entry.name}**!\n\nCalories: ${entry.calories} kcal\nProtein: ${entry.protein}g | Carbs: ${entry.carbs}g | Fat: ${entry.fat}g`);
+                addChatBubble('ai-bubble', `Successfully logged **${entry.name}**!\n\nCalories: ${entry.calories} kcal\nProtein: ${entry.protein}g | Carbs: ${entry.carbs}g | Fat: ${entry.fat}g`);
              } else {
                 addChatBubble('ai-bubble', `I analyzed the image as **${entry.name}** (${entry.calories} kcal), but couldn't save it to your log right now.`);
              }
@@ -276,7 +434,7 @@ window.AI = (() => {
       });
 
       recognition.onstart = () => {
-        micBtn.textContent = '🔴'; 
+        micBtn.classList.add('recording');
         micBtn.style.transform = 'scale(1.2)';
         if (input) input.placeholder = "Listening...";
       };
@@ -287,7 +445,7 @@ window.AI = (() => {
       };
 
       recognition.onend = () => {
-        micBtn.textContent = '🎤';
+        micBtn.classList.remove('recording');
         micBtn.style.transform = 'scale(1)';
         if (input) input.placeholder = "Ask about meals or snap a photo...";
         if (input && input.value.trim() !== '') {
@@ -296,7 +454,7 @@ window.AI = (() => {
       };
 
       recognition.onerror = (event) => {
-        micBtn.textContent = '🎤';
+        micBtn.classList.remove('recording');
         micBtn.style.transform = 'scale(1)';
         if (input) input.placeholder = "Ask about meals or snap a photo...";
         if (event.error === 'not-allowed') alert("Microphone access denied.");
@@ -336,13 +494,18 @@ window.AI = (() => {
       const typingId = 'typing-' + Date.now();
       pushMessage('ai-bubble', '...', typingId);
       
-      let finalReply = null;
-      if (isCloudModeActive) {
-        finalReply = await queryCloudGeminiAI(prompt);
-      }
-
+      let finalReply = checkAndParseChatReply(prompt);
+      
       if (!finalReply) {
-        finalReply = getReply(prompt);
+        if (isCloudModeActive) {
+          finalReply = await queryCloudGeminiAI(prompt);
+        }
+
+        if (!finalReply) {
+          finalReply = getReply(prompt);
+        }
+        
+        finalReply = appendMissingFieldQuestionIfNeeded(finalReply);
       }
       
       const typingEl = document.getElementById(typingId);
@@ -367,11 +530,11 @@ window.AI = (() => {
     }
 
     if (ctx.hydPct >= 1) {
-      insights.push({ type: 'success', title: 'Hydration goal met! 💧', msg: `You've hit your ${ctx.waterTarget}ml water target today. Keep it up!` });
+      insights.push({ type: 'success', title: 'Hydration goal met!', msg: `You've hit your ${ctx.waterTarget}ml water target today. Keep it up!` });
     }
 
     if (ctx.streak >= 3) {
-      insights.push({ type: 'success', title: `🔥 ${ctx.streak}-day streak!`, msg: `Impressive consistency! Keep logging daily to maintain your healthy habit.` });
+      insights.push({ type: 'success', title: `${ctx.streak}-day streak!`, msg: `Impressive consistency! Keep logging daily to maintain your healthy habit.` });
     }
 
     container.innerHTML = insights.map(i => `

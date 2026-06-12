@@ -58,14 +58,18 @@ window.Onboarding = (() => {
 
     // 3. Update wizard step dot indicators
     const dots = document.querySelectorAll('.onboarding-wizard-footer .step-dot');
+    const enabled = getEnabledSteps();
     dots.forEach((dot, idx) => {
-      dot.classList.toggle('active', idx === stepNum - 1);
+      const stepVal = idx + 1;
+      const isEnabled = enabled.includes(stepVal);
+      dot.classList.toggle('hidden', !isEnabled);
+      dot.classList.toggle('active', stepVal === stepNum);
     });
 
     // 4. Toggle buttons visibility
     const backBtn = document.getElementById('btn-onboarding-back');
     if (backBtn) {
-      backBtn.classList.toggle('hidden', stepNum === 1);
+      backBtn.classList.toggle('hidden', stepNum === enabled[0]);
     }
 
     const nextBtn = document.getElementById('btn-onboarding-next');
@@ -79,6 +83,40 @@ window.Onboarding = (() => {
         saveBtn.classList.add('hidden');
       }
     }
+  }
+
+  function getEnabledSteps() {
+    const profile = window.Storage ? window.Storage.getProfile() : {};
+    const connected = Boolean(profile.memactConnectionId);
+    if (!connected) {
+      return [1, 2, 3, 4, 5, 6];
+    }
+
+    const steps = [1];
+    
+    // Step 3 fields: age, weight, height
+    const step3Fields = ["age", "weight", "height"];
+    const isStep3Missing = step3Fields.some(f => profile[f] === undefined || profile[f] === null || String(profile[f]).trim() === "");
+    if (isStep3Missing) {
+      steps.push(3);
+    }
+    
+    // Step 4 fields: activity, goal
+    const step4Fields = ["activity", "goal"];
+    const isStep4Missing = step4Fields.some(f => profile[f] === undefined || profile[f] === null || String(profile[f]).trim() === "");
+    if (isStep4Missing) {
+      steps.push(4);
+    }
+
+    // Step 5 fields: dietaryPreference, allergies
+    const step5Fields = ["dietaryPreference", "allergies"];
+    const isStep5Missing = step5Fields.some(f => profile[f] === undefined || profile[f] === null || String(profile[f]).trim() === "");
+    if (isStep5Missing) {
+      steps.push(5);
+    }
+
+    steps.push(6);
+    return steps;
   }
 
   function validateWizardStep(stepNum) {
@@ -109,27 +147,78 @@ window.Onboarding = (() => {
     return true;
   }
 
+  function saveStepFields(stepNum) {
+    if (!window.Storage) return;
+    const profile = window.Storage.getProfile();
+    let updated = false;
+
+    if (stepNum === 3) {
+      const ageEl = document.getElementById('age');
+      const weightEl = document.getElementById('weight');
+      const heightEl = document.getElementById('height');
+      const genderEl = document.getElementById('gender');
+
+      if (ageEl) { profile.age = parseFloat(ageEl.value); updated = true; }
+      if (weightEl) { profile.weight = parseFloat(weightEl.value); updated = true; }
+      if (heightEl) { profile.height = parseFloat(heightEl.value); updated = true; }
+      if (genderEl) { profile.gender = genderEl.value; updated = true; }
+    } else if (stepNum === 4) {
+      const activityEl = document.getElementById('activity');
+      const goalEl = document.getElementById('goal');
+      const macroSplitEl = document.getElementById('macroSplit');
+
+      if (activityEl) { profile.activity = activityEl.value; updated = true; }
+      if (goalEl) { profile.goal = goalEl.value; updated = true; }
+      if (macroSplitEl) {
+        profile.macroSplit = macroSplitEl.value;
+        updated = true;
+        if (profile.macroSplit === 'custom') {
+          profile.customProtein = parseFloat(document.getElementById('customProtein')?.value || 25);
+          profile.customCarbs = parseFloat(document.getElementById('customCarbs')?.value || 45);
+          profile.customFat = parseFloat(document.getElementById('customFat')?.value || 30);
+        }
+      }
+    } else if (stepNum === 5) {
+      const dietaryPreferenceEl = document.getElementById('dietaryPreference');
+      const allergiesEl = document.getElementById('allergies');
+      const waterTargetEl = document.getElementById('waterTarget');
+
+      if (dietaryPreferenceEl) { profile.dietaryPreference = dietaryPreferenceEl.value; updated = true; }
+      if (allergiesEl) { profile.allergies = allergiesEl.value; updated = true; }
+      if (waterTargetEl) { profile.waterTarget = parseFloat(waterTargetEl.value); updated = true; }
+    }
+
+    if (updated) {
+      window.Storage.saveProfile(profile);
+      if (profile.memactConnectionId && window.MemactIntegration) {
+        window.MemactIntegration.proposeMissingContextToMemact(profile);
+        window.MemactIntegration.render();
+      }
+      if (window.App && typeof window.App.refresh === 'function') {
+        window.App.refresh();
+      }
+      if (window.Dashboard && typeof window.Dashboard.refresh === 'function') {
+        window.Dashboard.refresh();
+      }
+    }
+  }
+
   function nextWizardStep() {
     if (validateWizardStep(activeStep)) {
-      if (activeStep < totalSteps) {
-        const profile = window.Storage ? window.Storage.getProfile() : {};
-        if (activeStep === 1 && profile.memactConnectionId) {
-          showWizardStep(3);
-        } else {
-          showWizardStep(activeStep + 1);
-        }
+      saveStepFields(activeStep);
+      const enabled = getEnabledSteps();
+      const currentIndex = enabled.indexOf(activeStep);
+      if (currentIndex !== -1 && currentIndex < enabled.length - 1) {
+        showWizardStep(enabled[currentIndex + 1]);
       }
     }
   }
 
   function prevWizardStep() {
-    if (activeStep > 1) {
-      const profile = window.Storage ? window.Storage.getProfile() : {};
-      if (activeStep === 3 && profile.memactConnectionId) {
-        showWizardStep(1);
-      } else {
-        showWizardStep(activeStep - 1);
-      }
+    const enabled = getEnabledSteps();
+    const currentIndex = enabled.indexOf(activeStep);
+    if (currentIndex > 0) {
+      showWizardStep(enabled[currentIndex - 1]);
     }
   }
 
@@ -137,12 +226,8 @@ window.Onboarding = (() => {
     const modal = document.getElementById('onboarding-modal');
     if (modal) {
       modal.classList.remove('hidden');
-      const profile = window.Storage ? window.Storage.getProfile() : {};
-      if (profile.memactConnectionId) {
-        showWizardStep(3);
-      } else {
-        showWizardStep(1);
-      }
+      const enabled = getEnabledSteps();
+      showWizardStep(enabled[0]);
     }
   }
 
@@ -581,6 +666,8 @@ window.Onboarding = (() => {
     showWizard,
     startTour,
     nextWizardStep,
-    prevWizardStep
+    prevWizardStep,
+    showWizardStep,
+    getEnabledSteps
   };
 })();

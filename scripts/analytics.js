@@ -57,7 +57,7 @@ window.Analytics = {
   getHydrationLabel(water, target) {
     if (target === 0) return 'Set Goal';
     const pct = water / target;
-    if (pct >= 1.0) return 'Goal Met! 💧';
+    if (pct >= 1.0) return 'Goal Met!';
     if (pct >= 0.75) return 'Almost There';
     if (pct >= 0.5) return 'Halfway';
     if (pct > 0) return 'Low';
@@ -382,33 +382,45 @@ window.Analytics = {
     const hydPct = waterTarget > 0 ? water / waterTarget : 0;
     const protPct = targets.protein > 0 ? consumed.protein / targets.protein : 0;
 
+    const icons = {
+      meal: `<svg class="app-icon" style="color: var(--teal);" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+      energy: `<svg class="app-icon" style="color: var(--amber);" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+      warning: `<svg class="app-icon" style="color: var(--rose);" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14a2 2 0 0 0 1.73 3h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+      water: `<svg class="app-icon" style="color: var(--teal);" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`,
+      success: `<svg class="app-icon" style="color: var(--green);" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+      protein: `<svg class="app-icon" style="color: var(--violet);" viewBox="0 0 24 24"><path d="M6 12H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 8h12"/><path d="M12 3v18"/></svg>`,
+      target: `<svg class="app-icon" style="color: var(--accent);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+      chart: `<svg class="app-icon" style="color: var(--teal);" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+      star: `<svg class="app-icon" style="color: var(--amber);" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
+    };
+
     if (calPct < 0.5 && consumed.calories === 0)
-      recs.push({ icon: '🍽️', title: 'Log your first meal', desc: 'Start tracking to see your nutrition score rise.' });
+      recs.push({ icon: icons.meal, title: 'Log your first meal', desc: 'Start tracking to see your nutrition score rise.' });
     else if (calPct < 0.7)
-      recs.push({ icon: '⚡', title: 'Fuel up!', desc: `You still have ${Math.round(targets.calories - consumed.calories)} kcal left to reach your goal.` });
+      recs.push({ icon: icons.energy, title: 'Fuel up!', desc: `You still have ${Math.round(targets.calories - consumed.calories)} kcal left to reach your goal.` });
     else if (calPct > 1.1)
-      recs.push({ icon: '⚠️', title: 'Calorie limit exceeded', desc: `You're ${Math.round(consumed.calories - targets.calories)} kcal over your daily target.` });
+      recs.push({ icon: icons.warning, title: 'Calorie limit exceeded', desc: `You're ${Math.round(consumed.calories - targets.calories)} kcal over your daily target.` });
 
     if (hydPct < 0.5)
-      recs.push({ icon: '💧', title: 'Drink more water', desc: `You've reached ${Math.round(hydPct * 100)}% of your hydration goal. Aim for ${waterTarget}ml today.` });
+      recs.push({ icon: icons.water, title: 'Drink more water', desc: `You've reached ${Math.round(hydPct * 100)}% of your hydration goal. Aim for ${waterTarget}ml today.` });
     else if (hydPct >= 1.0)
-      recs.push({ icon: '✅', title: 'Hydration goal met!', desc: `Great job! You hit your ${waterTarget}ml water target for today.` });
+      recs.push({ icon: icons.success, title: 'Hydration goal met!', desc: `Great job! You hit your ${waterTarget}ml water target for today.` });
 
     if (protPct < 0.6)
-      recs.push({ icon: '💪', title: 'Boost protein intake', desc: `You've consumed ${Math.round(consumed.protein)}g of your ${targets.protein}g protein goal.` });
+      recs.push({ icon: icons.protein, title: 'Boost protein intake', desc: `You've consumed ${Math.round(consumed.protein)}g of your ${targets.protein}g protein goal.` });
 
     if (goal === 'lose' && calPct > 0.9 && calPct <= 1.0)
-      recs.push({ icon: '🎯', title: 'On track for fat loss', desc: 'Keep maintaining your calorie deficit consistently.' });
+      recs.push({ icon: icons.target, title: 'On track for fat loss', desc: 'Keep maintaining your calorie deficit consistently.' });
 
     if (goal === 'gain' && calPct >= 1.0)
-      recs.push({ icon: '📈', title: 'Great for muscle gain', desc: 'You hit your calorie surplus today. Combine with strength training.' });
+      recs.push({ icon: icons.chart, title: 'Great for muscle gain', desc: 'You hit your calorie surplus today. Combine with strength training.' });
 
     if (recs.length === 0)
-      recs.push({ icon: '⭐', title: 'Excellent day!', desc: 'You are hitting all your nutrition and hydration goals.' });
+      recs.push({ icon: icons.star, title: 'Excellent day!', desc: 'You are hitting all your nutrition and hydration goals.' });
 
     container.innerHTML = recs.map(r => `
       <div class="recommendation-card">
-        <span class="rec-icon">${r.icon}</span>
+        <span class="rec-icon" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.03);">${r.icon}</span>
         <div>
           <strong>${r.title}</strong>
           <span>${r.desc}</span>

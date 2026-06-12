@@ -104,15 +104,15 @@
 .bottom-nav-add {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, var(--green), #b7ffe1);
-  color: #04150e;
+  background: var(--text-primary);
+  color: var(--bg-primary);
   font-size: 1.5rem;
-  font-weight: 900;
+  font-weight: 700;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 28px rgba(56, 242, 166, 0.35);
+  box-shadow: none;
   cursor: pointer;
   transition: transform 160ms ease;
   line-height: 1;
@@ -484,9 +484,9 @@
 }
 
 .ai-message.user {
-  color: #ecfeff;
-  background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(56, 242, 166, 0.06));
-  border: 1px solid rgba(34, 211, 238, 0.22);
+  color: var(--text-primary);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-strong);
   text-align: right;
 }
 

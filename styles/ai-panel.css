@@ -65,9 +65,9 @@
 .mini-ai-toggle {
   width: 100%;
   min-height: 48px;
-  color: #04150e;
-  background: linear-gradient(135deg, var(--green), #b7ffe1);
-  font-weight: 950;
+  color: var(--bg-primary);
+  background: var(--text-primary);
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
